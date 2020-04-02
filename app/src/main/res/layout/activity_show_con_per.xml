@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context=".activity.AddSecretLogActivity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:hint="姓名  "
+                    android:textColor="@color/text_gray_6"
+                    android:textSize="@dimen/text_size_20" />
+                <TextView
+                    android:id="@+id/text_conper_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:hint="姓名"
+                    android:textColor="@color/text_gray_6"
+                    android:textSize="@dimen/text_size_20" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/DDDDDD" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ll_login_rounded_corners"
+                        android:gravity="left"
+                        android:hint="手机号1  "
+                        android:padding="5dp"
+                        android:textColor="@color/text_gray_6"
+                        android:textSize="@dimen/text_size_20" />
+                    <TextView
+                        android:id="@+id/text_conper_phone1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ll_login_rounded_corners"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:textColor="@color/text_gray_6"
+                        android:textSize="@dimen/text_size_20" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ll_login_rounded_corners"
+                        android:gravity="left"
+                        android:hint="手机号2  "
+                        android:padding="5dp"
+                        android:textColor="@color/text_gray_6"
+                        android:textSize="@dimen/text_size_20" />
+                    <TextView
+                        android:id="@+id/text_conper_phone2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/ll_login_rounded_corners"
+                        android:gravity="left"
+                        android:padding="5dp"
+                        android:textColor="@color/text_gray_6"
+                        android:textSize="@dimen/text_size_20" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/DDDDDD" />
+
+
+        </LinearLayout>
+</LinearLayout>

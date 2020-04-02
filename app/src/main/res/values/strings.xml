@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">InfoSecure</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="image_login_name">&#xe63c;</string>
+    <string name="image_login_pwd">&#xe627;</string>
+    <string name="login_name_hint">请输入账号</string>
+    <string name="login_pwd_hint">请输入密码</string>
+    <string name="login_dl">登录</string>
+    <string name="update_password_original">请输入原密码</string>
+    <string name="update_password_new">请输入新密码</string>
+    <string name="update_password_new_confirm">请再次输入新密码</string>
+</resources>

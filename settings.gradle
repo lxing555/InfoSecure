@@ -1,0 +1,2 @@
+rootProject.name='InfoSecure'
+include ':app', ':android-database-sqlcipher-4.3.0'
