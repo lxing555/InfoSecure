@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.infosecure">
-    <!-- 申明网络权限 -->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,14 +9,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.FileEncryptActivity" />
-        <activity android:name=".activity.ChangePWActivity" />
-        <activity android:name=".activity.InitPwActivity" />
-        <activity android:name=".activity.ShowConPerActivity" />
-        <activity android:name=".activity.AddConPerActivity" />
-        <activity android:name=".activity.ShowLogActivity" />
-        <activity android:name=".activity.AddSecretLogActivity" />
-        <activity android:name=".activity.SecretLogActivity" />
+        <activity android:name=".activity.FileSettingActivity"
+            android:label="文件加密设置"/>
+        <activity
+            android:name=".activity.ShowMesActivity"
+            android:label="短信详情" />
+        <activity
+            android:name=".activity.ChangeKeyActivity"
+            android:label="修改密钥" />
+        <activity
+            android:name=".activity.FileEncryptActivity"
+            android:label="文件保护" />
+        <activity
+            android:name=".activity.ChangePWActivity"
+            android:label="修改密码" />
+        <activity
+            android:name=".activity.InitPwActivity"
+            android:label="初始化" />
+        <activity
+            android:name=".activity.ShowConPerActivity"
+            android:label="联系人详情" />
+        <activity
+            android:name=".activity.AddConPerActivity"
+            android:label="添加联系人" />
+        <activity
+            android:name=".activity.ShowLogActivity"
+            android:label="日志详情" />
+        <activity
+            android:name=".activity.AddSecretLogActivity"
+            android:label="添加日志" />
+        <activity
+            android:name=".activity.SecretLogActivity"
+            android:label="私密日志" />
         <activity android:name=".activity.MainActivity">
 
             <!-- <intent-filter> -->
@@ -41,7 +65,12 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-    </application> <!-- 申明权限 操作SD卡 -->
+
+        <service
+            android:name=".MessageService"
+            android:enabled="true"
+            android:exported="true" />
+    </application>
     <uses-feature android:name="android.hardware.camera" />
 
     <uses-feature android:name="android.hardware.camera.autofocus" />

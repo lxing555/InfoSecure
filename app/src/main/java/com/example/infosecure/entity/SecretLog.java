@@ -8,7 +8,7 @@ public class SecretLog {
     private String logId;
     private String time;
     public ArrayList<String>images_base64=new ArrayList<String>();
-    public ArrayList<String>images_encrypt=new ArrayList<String>();
+    //public ArrayList<String>images_encrypt=new ArrayList<String>();
     public SecretLog(String title,String content,String time,String logId){
         this.title=title;
         this.content=content;

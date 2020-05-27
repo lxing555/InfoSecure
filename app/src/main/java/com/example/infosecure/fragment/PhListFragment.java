@@ -1,7 +1,10 @@
 package com.example.infosecure.fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 
@@ -36,6 +39,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import static com.example.infosecure.activity.LoginActivity.myDataBaseHelper;
+import static com.example.infosecure.adapter.MyDataBaseHelper.MESSAGE_ID;
+import static com.example.infosecure.adapter.MyDataBaseHelper.TABLE_MESSAGE;
 
 public class PhListFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -53,10 +58,6 @@ public class PhListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         view =inflater.inflate(R.layout.fragment_phonelist,null);
         setHasOptionsMenu(true);
-        if(ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_CONTACTS},201);
-        }
         initView();
         return view;
     }
@@ -65,7 +66,7 @@ public class PhListFragment extends Fragment {
         adapter=new ConPerRecycleAdapter(getActivity(), Infos.conPersonList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false));
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+
         adapter.setOnItemClickListener(new ConPerRecycleAdapter.OnItemClickListener() {
             @Override
             public void onItemClicked(View view, int position) {
@@ -77,12 +78,32 @@ public class PhListFragment extends Fragment {
         adapter.setmOnItemLongClickListener(new ConPerRecycleAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClicked(View v, int position) {
-                SQLiteDatabase db= myDataBaseHelper.getWritableDatabase(MyDataBaseHelper.DB_PASSWORD);
-                db.delete(MyDataBaseHelper.TABLE_CONPERSON,"name=?",new String[]{Infos.conPersonList.get(position).getName()});
-                Infos.conPersonList.remove(position);
-                adapter.notifyDataSetChanged();
+                showDialog(getContext(),position);
             }
         });
+    }
+
+    private void showDialog(Context context, final int position){
+        AlertDialog.Builder dialog=new AlertDialog.Builder(context);
+        //dialog.setTitle("确认要删除所选内容吗？");
+        dialog.setMessage("确认要删除所选内容吗？");
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                SQLiteDatabase db= myDataBaseHelper.getWritableDatabase(MyDataBaseHelper.DB_PASSWORD);
+                db.delete(MyDataBaseHelper.TABLE_LINKMAN,"name=?",new String[]{Infos.conPersonList.get(position).getName()});
+                Infos.conPersonList.remove(position);
+                adapter.notifyDataSetChanged();
+                db.close();
+            }
+        });
+        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -105,22 +126,23 @@ public class PhListFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    //获取所有联系人
-    public void getPhoneList(){
-        ContentResolver cr = getActivity().getContentResolver();
+    //获取手机本地所有联系人
+    private void getPhoneList(){
+        ContentResolver cr = getActivity().getContentResolver();       //打开ContentResolver查询本地联系人
         Cursor cursor = cr.query(phoneUri,new String[]{NUM,NAME},null,null,null);
         if(cursor.moveToFirst()){
             do{
-
-                ConPerson con = new ConPerson(cursor.getString(cursor.getColumnIndex(NAME)),cursor.getString(cursor.getColumnIndex(NUM)),"");
+                String conName=cursor.getString(cursor.getColumnIndex(NAME));//获取联系人姓名
+                String conPhone=cursor.getString(cursor.getColumnIndex(NUM));//获取联系人电话
+                ConPerson con = new ConPerson(conName,conPhone);
                 if(Infos.conPersonList.indexOf(con)==-1){
                     Infos.insert_conperson(con);
                     Infos.conPersonList.add(con);
                 }
             }while (cursor.moveToNext());
         }
-
     }
+
     @Override
     public void onResume(){
         super.onResume();

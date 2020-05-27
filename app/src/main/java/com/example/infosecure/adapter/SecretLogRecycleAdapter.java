@@ -4,13 +4,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.infosecure.R;
 import com.example.infosecure.entity.SecretLog;
 
 import java.util.ArrayList;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SecretLogRecycleAdapter extends RecyclerView.Adapter<SecretLogRecycleAdapter.MyViewHolder> {
@@ -30,7 +30,7 @@ public class SecretLogRecycleAdapter extends RecyclerView.Adapter<SecretLogRecyc
     }
 
     public interface OnItemLongClickListener{
-        void onItemLongClicked(View v ,int position);
+        void onItemLongClicked(View v, int position);
     }
 
     public void setOnItemClickListener(OnItemClickListener clickListener) {
@@ -50,8 +50,13 @@ public class SecretLogRecycleAdapter extends RecyclerView.Adapter<SecretLogRecyc
     @Override
     public void onBindViewHolder(MyViewHolder holder,int position){
         holder.textTime.setText(mList.get(position).getTime());
-        holder.textTitle.setText(mList.get(position).getContent());
+        holder.textTitle.setText(mList.get(position).getTitle());
         holder.textContent.setText(mList.get(position).getContent());
+    }
+
+    private String getContentShow(String content){
+        if(content.length()<=25)return content;
+        else return content.substring(0,25);
     }
 
     @Override

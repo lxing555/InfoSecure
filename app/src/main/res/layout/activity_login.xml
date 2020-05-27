@@ -36,17 +36,17 @@
             android:id="@+id/iv_login_icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@mipmap/secure"
             />
         <TextView
-        android:id="@+id/tv_login_versionName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="当前版本:1.0"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/text_size_16"
-        android:textColor="@color/text_gray_6"
-        />
+            android:id="@+id/tv_login_versionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前版本:2.0"
+            android:layout_marginTop="10dp"
+            android:textSize="@dimen/text_size_16"
+            android:textColor="@color/text_gray_6"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:id="@+id/text_fogetpw"
-                android:text="忘记密码" />
+                android:text="" />
 
         </RelativeLayout>
         <LinearLayout

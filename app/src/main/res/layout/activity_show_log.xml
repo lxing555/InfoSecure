@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".activity.AddSecretLogActivity">
 
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -28,11 +29,12 @@
                     android:id="@+id/text_show_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:layout_marginTop="5dp"
                     android:background="@null"
                     android:hint="标题"
-                    android:textColor="@color/text_gray_6"
-                    android:textSize="@dimen/text_size_14" />
+                    android:textColor="@color/text_gray_3"
+                    android:textSize="@dimen/text_size_18" />
 
             </LinearLayout>
 
@@ -74,7 +76,7 @@
                 <GridView
                     android:id="@+id/gridView_show_image"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="255dp"
                     android:layout_margin="10dp"
                     android:horizontalSpacing="5dp"
                     android:verticalSpacing="5dp"

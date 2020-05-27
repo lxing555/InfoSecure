@@ -23,26 +23,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.infosecure.FileUtil;
+import com.example.infosecure.util.FileUtil;
 import com.example.infosecure.R;
 
 import java.io.File;
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-
-import javax.crypto.NoSuchPaddingException;
 
 public class FileEncryptActivity extends AppCompatActivity {
-    private ImageView imagePhoto,imageDocument,imageVideo;
-    private TextView textVideo,textDocument,textPhoto;
+    private TextView textVideo,textDocument,textPhoto,textAudio;
+    private RelativeLayout rlEncryptImage,rlEncryptDocument,rlEncryptAudio,rlEncryptVideo;
     private String inPath_Name;
     private String file_true_Path;
     private String fileName;
-    private static int state=0;    //state为0时是加密模式，为1时是解密模式
+    public static int FILE_MANAGE_MODE=0;    //state为0时是加密模式，为1时是解密模式
+    public static int FILE_ENCRYPT_METHOD=1;   //0为ECB加密，1为ECB解密
     private static String[] PERMISSIONS_STORAGE = {
             "android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE" };
@@ -51,7 +48,8 @@ public class FileEncryptActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_maneger);
-        verifyStoragePermissions(this);
+        //getSupportActionBar().hide();
+        //verifyStoragePermissions(this);
         initView();
     }
     public static void verifyStoragePermissions(Activity activity) {
@@ -68,13 +66,15 @@ public class FileEncryptActivity extends AppCompatActivity {
         }
     }
     private void initView(){
-        imagePhoto=(ImageView)findViewById(R.id.image_encrypt_photo);
-        imageDocument=(ImageView)findViewById(R.id.image_encrypt_document);
-        imageVideo=(ImageView)findViewById(R.id.image_encrypt_video);
-        textDocument=(TextView)findViewById(R.id.text_document);
-        textPhoto=(TextView)findViewById(R.id.text_photo);
-        textVideo=(TextView)findViewById(R.id.text_video);
-        imageVideo.setOnClickListener(new View.OnClickListener() {
+        rlEncryptImage=(RelativeLayout)findViewById(R.id.rl_encrypt_image);
+        rlEncryptDocument=(RelativeLayout)findViewById(R.id.rl_encrypt_document);
+        rlEncryptAudio=(RelativeLayout)findViewById(R.id.rl_encrypt_audio);
+        rlEncryptVideo=(RelativeLayout)findViewById(R.id.rl_encrypt_video);
+        textPhoto=(TextView)findViewById(R.id.text_encrypt_image);
+        textVideo=(TextView)findViewById(R.id.text_encrypt_video);
+        textAudio=(TextView)findViewById(R.id.text_encrypt_audio);
+        textDocument=(TextView)findViewById(R.id.text_encrypt_document);
+        rlEncryptVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -84,7 +84,7 @@ public class FileEncryptActivity extends AppCompatActivity {
             }
         });
 
-        imageDocument.setOnClickListener(new View.OnClickListener() {
+        rlEncryptDocument.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -94,7 +94,7 @@ public class FileEncryptActivity extends AppCompatActivity {
             }
         });
 
-        imagePhoto.setOnClickListener(new View.OnClickListener() {
+        rlEncryptImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -102,6 +102,16 @@ public class FileEncryptActivity extends AppCompatActivity {
                 intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, 1);
 
+            }
+        });
+
+        rlEncryptAudio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("audio/*");
+                intent.addCategory(Intent.CATEGORY_OPENABLE);
+                startActivityForResult(intent, 1);
             }
         });
     }
@@ -119,32 +129,23 @@ public class FileEncryptActivity extends AppCompatActivity {
                 inPath_Name = getPath(this, uri);
                 getFileName(inPath_Name);
                 Toast.makeText(this, inPath_Name, Toast.LENGTH_SHORT).show();
-                if(state==0){
-                    try{
-                        FileUtil.encrypt(inPath_Name,file_true_Path+"encrypt"+fileName);
+                if(FILE_MANAGE_MODE==0){
+                    try {
+                        FileUtil.fileEncryptNDK(inPath_Name,file_true_Path,FILE_ENCRYPT_METHOD+"encrypt"+fileName,FILE_ENCRYPT_METHOD);
                         deleteSingleFile(inPath_Name);
-                    }
-                    catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-                } else if(state==1){
-                    try{
-                        FileUtil.decrypt(inPath_Name,file_true_Path+fileName.substring(7,fileName.length()));
-                        deleteSingleFile(inPath_Name);
-                    }
-                    catch (InvalidKeyException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchAlgorithmException e) {
-                        e.printStackTrace();
-                    } catch (NoSuchPaddingException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                } else{
+                    try {
+                        int method=fileName.charAt(0)-48;
+                        if(method==FILE_ENCRYPT_METHOD){
+                            FileUtil.fileDecryptNDK(inPath_Name,file_true_Path,fileName.substring(8,fileName.length()),FILE_ENCRYPT_METHOD);
+                            deleteSingleFile(inPath_Name);
+                        }else{
+                            Toast.makeText(FileEncryptActivity.this,"当前解密方式与该文件加密方式不符，请切换加解密方法",Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
@@ -165,23 +166,28 @@ public class FileEncryptActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.item_change_mode:{
-                if(state==0){
-                    textVideo.setText("视频解密");
-                    textPhoto.setText("照片解密");
-                    textDocument.setText("文档解密");
-                    state=1;
-                    break;
-                }else if(state==1){
-                    textVideo.setText("视频加密");
-                    textPhoto.setText("照片加密");
-                    textDocument.setText("文档加密");
-                    state=0;
-                }
-
+            case R.id.item_file_settings:{
+                Intent intent=new Intent(FileEncryptActivity.this,FileSettingActivity.class);
+                startActivity(intent);
             }break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(FILE_MANAGE_MODE==1){
+            textVideo.setText("视频解密");
+            textPhoto.setText("照片解密");
+            textDocument.setText("文档解密");
+            textAudio.setText("音频解密");
+        }else{
+            textVideo.setText("视频加密");
+            textPhoto.setText("照片加密");
+            textDocument.setText("文档加密");
+            textAudio.setText("音频加密");
+        }
     }
 
     public String getRealPathFromURI(Uri contentUri) {

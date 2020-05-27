@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Base64;
 import android.util.Log;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +16,6 @@ public class Photos {
     private String base64;
     /**
      * 将bitmap转换成byte,该过程时间较长,建议子线程运行,但是这里我为了setText，就放主线程了
-     *
      * @param bitmap
      * @return
      */
@@ -26,8 +24,8 @@ public class Photos {
         if (bitmap == null)
             return "解析异常";
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        //此步骤为将bitmap进行压缩，我选择了原格式png，第二个参数为压缩质量，我选择了原画质，也就是100，第三个参数传入outputstream去写入压缩后的数据
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        //此步骤为将bitmap进行压缩，选择了格式jepg，第二个参数为压缩质量，第三个参数传入outputstream去写入压缩后的数据
+        bitmap.compress(Bitmap.CompressFormat.JPEG,80, outputStream);
         try {
             outputStream.flush();
             outputStream.close();
@@ -36,6 +34,7 @@ public class Photos {
         }
         //将获取到的outputstream转换成byte数组
         byte[] bytes = outputStream.toByteArray();
+        Log.d("图片压缩测试80%压缩",""+bytes.length);
         //android.util包下有Base64工具类，直接调用，格式选择Base64.DEFAULT即可
         String str = Base64.encodeToString(bytes, Base64.DEFAULT);
         //打印数据，下面计算用

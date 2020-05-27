@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="主页" />
+        android:title="日志" />
 
     <item
         android:id="@+id/navigation_phlist"

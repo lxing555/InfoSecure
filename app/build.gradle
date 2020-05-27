@@ -20,6 +20,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    externalNativeBuild {
+        cmake {
+            path "src/main/jni/CMakeLists.txt"
+            version "3.10.2"
+        }
+    }
 
 }
 
@@ -38,7 +44,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation files('libs\\SQLiteStudioRemote.jar')
+
     implementation project(path: ':android-database-sqlcipher-4.3.0')
     implementation "androidx.sqlite:sqlite:2.0.1"
+
+
+    //implementation files('libs\\SQLiteStudioRemote.jar')
 }

@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.example.infosecure.AesUtil;
 import com.example.infosecure.R;
 import com.example.infosecure.entity.Photos;
 import com.example.infosecure.entity.Infos;
@@ -55,21 +54,11 @@ public class AddSecretLogActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_secret_log);
+        //getSupportActionBar().hide();
         initView();
         getWindow().setSoftInputMode(WindowManager.LayoutParams.
                 SOFT_INPUT_ADJUST_PAN);
-        if (Build.VERSION.SDK_INT >= 23) {
-            int REQUEST_CODE_CONTACT = 101;
-            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-            //验证是否许可权限
-            for (String str : permissions) {
-                if (this.checkSelfPermission(str) != PackageManager.PERMISSION_GRANTED) {
-                    //申请权限
-                    this.requestPermissions(permissions, REQUEST_CODE_CONTACT);
-                    return;
-                }
-            }
-        }
+
         //锁定屏幕
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         dataList=new ArrayList<Map<String,Object>>();
@@ -174,10 +163,7 @@ public class AddSecretLogActivity extends AppCompatActivity {
             {
                 String base= Photos.imageToBase64(addbmp);
                 Log.d("Base64",base);
-                String enbase= AesUtil.getEnString(base, Infos.key);
-                Log.d("加密后Base64",enbase);
                 secretLog.images_base64.add(base);
-                secretLog.images_encrypt.add(enbase);
             }
             HashMap<String, Object> map = new HashMap<String, Object>();
             map.put("itemImage", addbmp);
@@ -219,7 +205,6 @@ public class AddSecretLogActivity extends AppCompatActivity {
                 dataList.remove(position);
                 simpleAdapter.notifyDataSetChanged();
                 secretLog.images_base64.remove(position);
-                secretLog.images_encrypt.remove(position);
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener(){

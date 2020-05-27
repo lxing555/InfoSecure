@@ -4,11 +4,32 @@ public class ConPerson {
     private String name;
     private String phone1;
     private String phone2;
+    private String linkId;
+    public String getLinkId() {
+        return linkId;
+    }
+
+    public void setLinkId(String linkId) {
+        this.linkId = linkId;
+    }
+
+
+
+    public ConPerson(String name,String phone1,String phone2,String id){
+        this.name=name;
+        this.phone1 = phone1;
+        this.phone2=phone2;
+        this.linkId=id;
+    }
 
     public ConPerson(String name,String phone1,String phone2){
         this.name=name;
         this.phone1 = phone1;
         this.phone2=phone2;
+    }
+    public ConPerson(String name,String phone1){
+        this.name=name;
+        this.phone1 = phone1;
     }
     public boolean equals(Object obj)//重写equals方法,原先的是判断是否同一对象，现在的是判断字符串
     {

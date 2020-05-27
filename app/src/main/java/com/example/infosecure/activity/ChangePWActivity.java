@@ -11,10 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.infosecure.AesUtil;
 import com.example.infosecure.R;
 import com.example.infosecure.adapter.MyDataBaseHelper;
-import com.example.infosecure.entity.Infos;
 
 public class ChangePWActivity extends AppCompatActivity {
     private EditText eTextOldPW,eTextNewPW,eTextNewPWRe;
@@ -24,6 +22,7 @@ public class ChangePWActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_pw);
+        //getSupportActionBar().hide();
         initView();
     }
     private void initView(){
@@ -46,7 +45,7 @@ public class ChangePWActivity extends AppCompatActivity {
                 }
                 if(cursor.moveToFirst()){
                     String oldpw=cursor.getString(cursor.getColumnIndex("password"));
-                    if(!AesUtil.getDeString(oldpw,Infos.key).equals(old)){
+                    if(!oldpw.equals(old)){
                         Toast.makeText(ChangePWActivity.this,"原密码错误",Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -63,7 +62,7 @@ public class ChangePWActivity extends AppCompatActivity {
                     Toast.makeText(ChangePWActivity.this,"新密码不一致！",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(newOne.length()<6||newTwo.length()<6){
+                if(newOne.length()<6){
                     Toast.makeText(ChangePWActivity.this,"密码长度过短",Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -72,7 +71,7 @@ public class ChangePWActivity extends AppCompatActivity {
                     return;
                 }
                 ContentValues values=new ContentValues();
-                values.put("password", AesUtil.getEnString(newOne,Infos.key));
+                values.put("password", newOne);
                 db.update(MyDataBaseHelper.TABLE_USER,values,"name=?",new String[]{"admin"});
                 Toast.makeText(ChangePWActivity.this,"密码更新成功",Toast.LENGTH_SHORT).show();
                 cursor.close();

@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="加密/解密切换"
-        android:id="@+id/item_change_mode"
+        android:title="设置"
+        android:id="@+id/item_file_settings"
+        android:icon="@mipmap/setting"
+        app:showAsAction="always"
+        android:showAsAction="always"
+        tools:ignore="AppCompatResource"
         />
+
 </menu>
